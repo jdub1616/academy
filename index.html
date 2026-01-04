@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Group Lookup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Optional but recommended -->
+  <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+
+  <h2>Find Your Child’s Group</h2>
+
+  <p>
+    Enter your child’s first and last name exactly as provided during registration.
+  </p>
+
+  <div>
+    <input
+      id="firstName"
+      type="text"
+      placeholder="First name"
+      autocomplete="given-name"
+    >
+  </div>
+
+  <div>
+    <input
+      id="lastName"
+      type="text"
+      placeholder="Last name"
+      autocomplete="family-name"
+    >
+  </div>
+
+  <div>
+    <button onclick="searchPlayer()">Search</button>
+  </div>
+
+  <hr>
+
+  <div id="result"></div>
+
+  <!-- Load your JavaScript LAST -->
+  <script src="script.js"></script>
+
+</body>
+</html>
