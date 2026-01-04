@@ -1,20 +1,29 @@
-const SHEET_URL = "2PACX-1vSgf4dBZNBLIBOAcBXntssSvs17CnrRNWQyW__vs1g8EnMJ9lEwMBJVPGWLjZ4PsfaEK0CMilzJDdJt";
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgf4dBZNBLIBOAcBXntssSvs17CnrRNWQyW__vs1g8EnMJ9lEwMBJVPGWLjZ4PsfaEK0CMilzJDdJt/pub?output=csv";
 
 let players = [];
 
 /* ===============================
-   LOAD GOOGLE SHEET
+   LOAD AND PARSE CSV
 ================================ */
 fetch(SHEET_URL)
-  .then(res => res.text())
-  .then(csv => {
-    players = Papa.parse(csv, {
-      header: true,
-      skipEmptyLines: true
-    }).data;
+  .then(response => response.text())
+  .then(text => {
+    const rows = text.trim().split("\n");
+    const headers = rows[0].split(",");
+
+    for (let i = 1; i < rows.length; i++) {
+      const values = rows[i].split(",");
+      let player = {};
+
+      headers.forEach((header, index) => {
+        player[header.trim()] = values[index]?.trim() || "";
+      });
+
+      players.push(player);
+    }
   })
   .catch(err => {
-    console.error("Error loading player data:", err);
+    console.error("Failed to load player data:", err);
   });
 
 /* ===============================
@@ -28,9 +37,7 @@ function searchPlayer() {
   resultDiv.innerHTML = "";
 
   if (!firstInput || !lastInput) {
-    resultDiv.innerHTML = errorMessage(
-      "Please enter both first and last name."
-    );
+    resultDiv.textContent = "Please enter both first and last name.";
     return;
   }
 
@@ -38,74 +45,55 @@ function searchPlayer() {
   const last  = lastInput.toLowerCase();
 
   const matches = players.filter(p =>
-    p.first_name?.trim().toLowerCase() === first &&
-    p.last_name?.trim().toLowerCase() === last
+    p.first_name.toLowerCase() === first &&
+    p.last_name.toLowerCase() === last
   );
 
   /* ===============================
-     NO MATCH FOUND
+     NO MATCH
   ================================ */
   if (matches.length === 0) {
     resultDiv.innerHTML = `
-      ${errorMessage("No player found with that exact name.")}
-      ${contactButton()}
+      <p>No player found with that exact name.</p>
+      <button onclick="contactOffice()">Contact the office</button>
     `;
     return;
   }
 
   /* ===============================
-     MULTIPLE EXACT MATCHES
+     MULTIPLE MATCHES
   ================================ */
   if (matches.length > 1) {
-    resultDiv.innerHTML = `
-      ${warningMessage("Multiple players found with this name. Please confirm below.")}
-      ${matches.map(renderPlayerCard).join("")}
-    `;
+    resultDiv.innerHTML = "<p>Multiple players found:</p>";
+    matches.forEach(p => {
+      resultDiv.innerHTML += `
+        <p>
+          ${p.first_name} ${p.last_name}<br>
+          Age Group: ${p.age_group}<br>
+          Group: ${p.group}<br>
+          Uniform Size: ${p.uniform_size}
+        </p>
+      `;
+    });
     return;
   }
 
   /* ===============================
      SINGLE MATCH
   ================================ */
-  resultDiv.innerHTML = renderPlayerCard(matches[0]);
-}
-
-/* ===============================
-   PLAYER CARD
-================================ */
-function renderPlayerCard(player) {
-  return `
-    <div class="player-card">
-      <div class="group-badge">${player.group}</div>
-      <p><strong>First Name:</strong> ${player.first_name}</p>
-      <p><strong>Last Name:</strong> ${player.last_name}</p>
-      <p><strong>Age Group:</strong> ${player.age_group}</p>
-      <p><strong>Uniform Size:</strong> ${player.uniform_size}</p>
-    </div>
+  const p = matches[0];
+  resultDiv.innerHTML = `
+    <p>
+      <strong>${p.first_name} ${p.last_name}</strong><br>
+      Age Group: ${p.age_group}<br>
+      Group: ${p.group}<br>
+      Uniform Size: ${p.uniform_size}
+    </p>
   `;
 }
 
 /* ===============================
-   UI HELPERS
-================================ */
-function errorMessage(text) {
-  return `<p class="error">${text}</p>`;
-}
-
-function warningMessage(text) {
-  return `<p class="warning">${text}</p>`;
-}
-
-function contactButton() {
-  return `
-    <button class="contact-btn" onclick="contactOffice()">
-      Contact the office for help
-    </button>
-  `;
-}
-
-/* ===============================
-   CONTACT ACTION
+   CONTACT LINK
 ================================ */
 function contactOffice() {
   window.location.href = "mailto:jonathan@bmocentrelondon.com?subject=Group Lookup Help";
