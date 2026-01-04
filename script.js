@@ -86,7 +86,7 @@ function searchPlayer() {
     <p>
       <strong>${p.first_name} ${p.last_name}</strong><br>
       Age Group: ${p.age_group}<br>
-      Group: ${p.group}<br>
+      Group: ${p.group ? p.group.replace(/Group\s*/gi, "").trim() : "Not yet assigned"}</p>
       Uniform Size: ${p.uniform_size}
     </p>
   `;
@@ -97,4 +97,5 @@ function searchPlayer() {
 ================================ */
 function contactOffice() {
   window.location.href = "mailto:jonathan@bmocentrelondon.com?subject=Group Lookup Help";
+
 }
