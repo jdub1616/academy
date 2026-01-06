@@ -1,5 +1,43 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgf4dBZNBLIBOAcBXntssSvs17CnrRNWQyW__vs1g8EnMJ9lEwMBJVPGWLjZ4PsfaEK0CMilzJDdJt/pub?output=csv";
 
+const groupToField = {
+  "1A": "2A",
+  "1B": "2B",
+  "2A": "1A", 
+  "2B": "1B",
+  "4A": "3A", 
+  "4B": "3B",
+  "5A": "4A", 
+  "5B": "4B",
+  "7A": "1A", 
+  "7B": "1B",
+  "8A": "2A", 
+  "8B": "2B",
+  "9A": "3A", 
+  "9B": "3B",
+  "10A": "4A", 
+  "10B": "4B",
+  "11A": "5A", 
+  "11B": "5B",
+  "12A": "6A", 
+  "12B": "6B"
+};
+
+function normalizeGroup(rawGroup) {
+  if (!rawGroup) return null;
+  return rawGroup.replace(/^Group\s*/i, "").trim().toUpperCase();
+}
+
+function getFieldImageForGroup(rawGroup) {
+  const group = normalizeGroup(rawGroup);
+  if (!group) return null;
+
+  const field = groupToField[group];
+  if (!field) return null;
+
+  return `images/field-${field.toLowerCase()}.png`;
+}
+
 let players = [];
 
 /* ===============================
@@ -49,6 +87,12 @@ function searchPlayer() {
     p.last_name.toLowerCase() === last
   );
 
+  const fieldImage = getFieldImageForGroup(p.group);
+
+  const imageHtml = fieldImage
+    ? `<img src="${fieldImage}" alt="Field ${normalizeGroup(p.group)} map" style="max-width:100%; margin-top:12px;">`
+    : "";
+
   /* ===============================
      NO MATCH
   ================================ */
@@ -89,6 +133,7 @@ function searchPlayer() {
       Group: ${p.group ? p.group.replace(/Group\s*/gi, "").trim() : "Not yet assigned"}</p>
       Uniform Size: ${p.uniform_size}
     </p>
+      ${imageHtml}
   `;
 }
 
@@ -99,3 +144,4 @@ function contactOffice() {
   window.location.href = "mailto:jonathan@bmocentrelondon.com?subject=Group Lookup Help";
 
 }
+
