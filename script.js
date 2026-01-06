@@ -1,26 +1,27 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgf4dBZNBLIBOAcBXntssSvs17CnrRNWQyW__vs1g8EnMJ9lEwMBJVPGWLjZ4PsfaEK0CMilzJDdJt/pub?output=csv";
 
 const groupToField = {
-  "1A": "2A",
-  "1B": "2B",
-  "2A": "1A", 
-  "2B": "1B",
-  "4A": "3A", 
-  "4B": "3B",
-  "5A": "4A", 
-  "5B": "4B",
-  "7A": "1A", 
-  "7B": "1B",
-  "8A": "2A", 
-  "8B": "2B",
-  "9A": "3A", 
-  "9B": "3B",
-  "10A": "4A", 
-  "10B": "4B",
-  "11A": "5A", 
-  "11B": "5B",
-  "12A": "6A", 
-  "12B": "6B"
+  "5:30pm Group": "1B",
+  "Group 1A": "2A",
+  "Group 1B": "2B",
+  "Group 2A": "1A", 
+  "Group 2B": "1B",
+  "Group 4A": "3A", 
+  "Group 4B": "3B",
+  "Group 5A": "4A", 
+  "Group 5B": "4B",
+  "Group 7A": "1A", 
+  "Group 7B": "1B",
+  "Group 8A": "2A", 
+  "Group 8B": "2B",
+  "Group 9A": "3A", 
+  "Group 9B": "3B",
+  "Group 10A": "4A", 
+  "Group 10B": "4B",
+  "Group 11A": "5A", 
+  "Group 11B": "5B",
+  "Group 12A": "6A", 
+  "Group 12B": "6B"
 };
 
 function normalizeGroup(rawGroup) {
@@ -144,4 +145,5 @@ function contactOffice() {
   window.location.href = "mailto:jonathan@bmocentrelondon.com?subject=Group Lookup Help";
 
 }
+
 
