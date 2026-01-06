@@ -1,4 +1,4 @@
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgf4dBZNBLIBOAcBXntssSvs17CnrRNWQyW__vs1g8EnMJ9lEwMBJVPGWLjZ4PsfaEK0CMilzJDdJt/pub?output=csv";
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgf4dBZNBLIBOAcBXntssSvs17CnrRNWQyW__vs1g8EnMJWLjZ4PsfaEK0CMilzJDdJt/pub?output=csv";
 
 /* ===============================
    GROUP → FIELD MAP
@@ -39,9 +39,7 @@ function getFieldImageForGroup(rawGroup) {
   if (!rawGroup) return null;
 
   // EXCLUDE 5:30pm group entirely
-  if (rawGroup.toLowerCase().includes("5:30")) {
-    return null;
-  }
+  if (rawGroup.toLowerCase().includes("5:30")) return null;
 
   const group = normalizeGroup(rawGroup);
   if (!group) return null;
@@ -133,8 +131,9 @@ function searchPlayer() {
   /* ===============================
      SINGLE MATCH
   ================================ */
-  const p = matches[0];
+  const p = matches[0]; // DEFINE player FIRST
 
+  // Now safely get the field image (5:30 group will return null)
   const fieldImage = getFieldImageForGroup(p.group);
   const imageHtml = fieldImage
     ? `<img src="${fieldImage}" alt="Field ${normalizeGroup(p.group)} map" style="max-width:100%; margin-top:12px;">`
