@@ -1,4 +1,4 @@
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgf4dBZNBLIBOAcBXntssSvs17CnrRNWQyW__vs1g8EnMJWLjZ4PsfaEK0CMilzJDdJt/pub?output=csv";
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgf4dBZNBLIBOAcBXntssSvs17CnrRNWQyW__vs1g8EnMJ9lEwMBJVPGWLjZ4PsfaEK0CMilzJDdJt/pub?output=csv";
 
 /* ===============================
    GROUP → FIELD MAP (normalized keys)
@@ -151,3 +151,4 @@ function searchPlayer() {
 function contactOffice() {
   window.location.href = "mailto:jonathan@bmocentrelondon.com?subject=Group Lookup Help";
 }
+
