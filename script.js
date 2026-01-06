@@ -129,11 +129,8 @@ function searchPlayer() {
 
   // Only now call getFieldImageForGroup
   const fieldImage = getFieldImageForGroup(p.group);
-  const imageHtml = fieldImage
-    ? `<img src="${fieldImage}" alt="Field ${normalizeGroup(p.group)} map" style="max-width:100%; margin-top:12px;">`
-    : "";
 
-   const imageHtml = fieldImage
+  const imageHtml = fieldImage
   ? `<div style="text-align:center; padding:6px;">
        <img src="${fieldImage}" alt="Field ${normalizeGroup(p.group)} map" style="display:block; margin:auto; max-width:100%; max-height:250px;">
      </div>`
@@ -157,6 +154,7 @@ function searchPlayer() {
 function contactOffice() {
   window.location.href = "mailto:jonathan@bmocentrelondon.com?subject=Group Lookup Help";
 }
+
 
 
 
