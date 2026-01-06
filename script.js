@@ -1,8 +1,7 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSgf4dBZNBLIBOAcBXntssSvs17CnrRNWQyW__vs1g8EnMJWLjZ4PsfaEK0CMilzJDdJt/pub?output=csv";
 
 /* ===============================
-   GROUP → FIELD MAP
-   (KEYS MUST BE NORMALIZED)
+   GROUP → FIELD MAP (normalized keys)
 ================================ */
 const groupToField = {
   "1A": "2A",
@@ -38,7 +37,7 @@ function normalizeGroup(rawGroup) {
 function getFieldImageForGroup(rawGroup) {
   if (!rawGroup) return null;
 
-  // EXCLUDE 5:30pm group entirely
+  // Do not show image for 5:30pm group
   if (rawGroup.toLowerCase().includes("5:30")) return null;
 
   const group = normalizeGroup(rawGroup);
@@ -50,11 +49,11 @@ function getFieldImageForGroup(rawGroup) {
   return `images/field-${field.toLowerCase()}.png`;
 }
 
+/* ===============================
+   LOAD PLAYER DATA
+================================ */
 let players = [];
 
-/* ===============================
-   LOAD AND PARSE CSV
-================================ */
 fetch(SHEET_URL)
   .then(response => response.text())
   .then(text => {
@@ -94,14 +93,13 @@ function searchPlayer() {
   const first = firstInput.toLowerCase();
   const last  = lastInput.toLowerCase();
 
+  // Filter matches
   const matches = players.filter(p =>
     p.first_name.toLowerCase() === first &&
     p.last_name.toLowerCase() === last
   );
 
-  /* ===============================
-     NO MATCH
-  ================================ */
+  // No match
   if (matches.length === 0) {
     resultDiv.innerHTML = `
       <p>No player found with that exact name.</p>
@@ -110,9 +108,7 @@ function searchPlayer() {
     return;
   }
 
-  /* ===============================
-     MULTIPLE MATCHES
-  ================================ */
+  // Multiple matches
   if (matches.length > 1) {
     resultDiv.innerHTML = "<p>Multiple players found:</p>";
     matches.forEach(p => {
@@ -128,17 +124,16 @@ function searchPlayer() {
     return;
   }
 
-  /* ===============================
-     SINGLE MATCH
-  ================================ */
-  const p = matches[0]; // DEFINE player FIRST
+  // Single match — define player before using it
+  const p = matches[0];
 
-  // Now safely get the field image (5:30 group will return null)
+  // Only now call getFieldImageForGroup
   const fieldImage = getFieldImageForGroup(p.group);
   const imageHtml = fieldImage
     ? `<img src="${fieldImage}" alt="Field ${normalizeGroup(p.group)} map" style="max-width:100%; margin-top:12px;">`
     : "";
 
+  // Render result
   resultDiv.innerHTML = `
     <p>
       <strong>${p.first_name} ${p.last_name}</strong><br>
